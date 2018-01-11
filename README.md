@@ -5,14 +5,14 @@ Base Network : ResNet101
 
 Train & Test Dataset : PASCAL VOC 2007년 
 
+-------
 
-
-**TODO**
+## TODO
 
 * Faster R CNN 구현 
   - Base Network 
   - Region Proposal Network
-   - ROI Pooling Layer
+  - ROI Pooling Layer
 * PS ROI Pooling 
 * Separable Convoltuion Layers
 * Deformable Convolution 
