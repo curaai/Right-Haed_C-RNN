@@ -8,5 +8,10 @@
 
 4. Make directory image_crop_tests in the directory same with your source file.
 
-5. Make directory image_ground_truths in the directory same with yout source file.
+5. Make directory image_ground_truths in the directory same with your source file.
 
+### Memo
+
+Can we give label to model by just concatenating labels? Label classification is work of RPN?
+
+Surprisingly, cv2 image is based on numpy.ndarray!
