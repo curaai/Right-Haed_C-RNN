@@ -1,13 +1,14 @@
 import cv2
 import xml.etree.ElementTree as et
-import random
 import os
 
 class pascalVOC:
     def __init__(self, resize=False, resize_width=500, resize_height=400):
         self.name = 'pascalVOC'
 
+        # number of images in directory
         file_num = len([n for n in os.listdir('./images')])
+
         self.num_images = file_num
         self.resize = resize
         self.resize_width = resize_width
@@ -15,13 +16,13 @@ class pascalVOC:
         self.images = []
         self.annotations = []
 
-        self.all_objects = []
-        self.current_object = []
+        # self.all_objects = []
+        # self.current_object = []
         self.current_batch = 0
 
         self.bounding_boxes = []
         self.labels = []
-        self.objects = []
+        #self.objects = []
         self.image_sizes = []
 
         self.truth_labels ={'dog': 0,
@@ -46,13 +47,14 @@ class pascalVOC:
                       'sheep': 19,
                       }
 
-
+    # get next batch datas : images, labels, bounding boxes
     def get_next_batch(self, batch_size=10):
         self.images = []
         self.labels = []
         self.bounding_boxes = []
         self.annotations = []
 
+        # to handle 9900 ~ 9963 iteration
         if self.current_batch + batch_size >= self.num_images:
             iterator = range(self.current_batch + 1, self.num_images)
         else:
@@ -71,19 +73,21 @@ class pascalVOC:
             self.annotations.append(root)
 
             self.image_sizes.append(size)
-            self.all_objects.append(objects)
+            #self.all_objects.append(objects)
             self.labels.append(label)
             self.bounding_boxes.append(bounding_box)
 
+        # set next batch index
         self.current_batch = self.current_batch + batch_size
 
         return self.images, self.labels, self.bounding_boxes
 
-
-
+    # read image at uri
     def read_image(self, number):
         image_uri = './images/' + str(number).zfill(6) + '.jpg'
         img = cv2.imread(image_uri)
+
+        # handle resizing
         if self.resize:
             img = cv2.resize(img, (self.resize_width, self.resize_height))
 
@@ -94,7 +98,7 @@ class pascalVOC:
         tree = et.parse(annotation_uri)
         return tree.getroot()
 
-    # one annotation's size data
+    # get one annotation's size data
     def get_size(self, root):
         _size_dict = {}
         size = root.find('size')
@@ -103,7 +107,7 @@ class pascalVOC:
         _size_dict['depth'] = size[2].text
         return _size_dict
 
-    # one annotation's object data
+    # get one annotation's objects data
     def get_objects(self, root):
         objects = []
         for obj in root.findall('object'):
@@ -124,6 +128,7 @@ class pascalVOC:
 
         return objects
 
+    # get all object's labels based on name
     def get_labels(self, objects):
         labels = []
 
@@ -132,6 +137,7 @@ class pascalVOC:
 
         return labels
 
+    # get all object's bounding boxes
     def get_bounding_boxes(self, objects, size):
         bounding_boxes = []
         for i in range(len(objects)):

@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 import random
 
@@ -15,15 +14,17 @@ class Tools:
                                          random.randrange(50, 255))
                                       )
 
-
+    # show cv2 image
     def show_image(self, img, text='Image Show'):
         cv2.imshow(text, img)
         cv2.waitKey(1)
         cv2.destroyAllWindows()
 
+    # save cv2 image
     def save_image(self, img, filename='test.jpg'):
         cv2.imwrite(filename, img)
 
+    # draw all object's bounding boxes
     def draw_bounding_boxes(self, img, box, label):
         if len(box) != len(label):
             raise IndexError
